@@ -3,13 +3,12 @@
 using namespace std;
 
 typedef long long LL;
-typedef pair<LL, int> PII;
-
+typedef pair<LL, int> PII; // 按<距离， 点>， 方便堆排序
 const int N = 1e5 + 10;
-const int M = 2e5 + 10;
-int n, m, s;
+
 vector<PII> edges[N];
 LL dist[N];
+int n, m, s;
 
 void dijkstra(){
     memset(dist, 0x3f, sizeof dist);
@@ -23,9 +22,9 @@ void dijkstra(){
         heap.pop();
 
         if(d > dist[u]) continue;
-
-        for(auto [v, w] : edges[u]){
-            if(dist[v] > dist[u] + w){
+        
+        for(auto [w, v] : edges[u]){
+            if(dist[u]+w < dist[v]){
                 dist[v] = dist[u] + w;
                 heap.push({dist[v], v});
             }
@@ -38,11 +37,11 @@ int main(){
     for(int i=1; i<=m; i++){
         int u, v; LL w;
         cin >> u >> v >> w;
-        edges[u].push_back({v, w});
+        edges[u].push_back({w, v});
     }
 
     dijkstra();
-
+    
     for(int i=1; i<=n; i++){
         cout << dist[i] << " ";
     }
